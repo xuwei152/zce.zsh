@@ -1,3 +1,7 @@
+This is a fork from link:https://github.com/hchbaw/zce.zsh[hchbaw/zce.zsh].
+
+Tanks to help of claude-3.5-sonnet in link:https://www.cursor.com/[cursor], the target character is now matched smartly for case. In the mode, the motion argument "a" matches both "a" and "A", and "A" matches "A" only. I prefer smart-case matching, because the matched characters are not so many in the command line typically.
+
 vim's EasyMotion / Emacs's ace-jump-mode for zsh. 
 -------------------------------------------------
 Author: Takeshi Banse <takebi@laafc.net>
