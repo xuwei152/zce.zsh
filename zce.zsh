@@ -65,8 +65,14 @@ zce-1 () {
   local -a ps
   local -a match mbegin mend
   local null=$'\0' ok=$'\e\e ' okp=$'\e\e [[:digit:]]##(#e)'
+  
+  # Create smart case pattern: lowercase matches both, uppercase matches only uppercase
+  if [[ "$c" == [[:upper:]] ]]; then
+    ps=(${${(M)${(0)${(S)b//*(#b)($c)/${ok}$mbegin[1]${null}}}:#${~okp}}#${ok}})
+  else
+    ps=(${${(M)${(0)${(S)b//*(#b)([${c:u}${c:l}])/${ok}$mbegin[1]${null}}}:#${~okp}}#${ok}})
+  fi
 
-  ps=(${${(M)${(0)${(S)b//*(#b)(${c})/${ok}$mbegin[1]${null}}}:#${~okp}}#${ok}})
   if (($#ps == 0)); then
     zce-fail; return -1
   elif (($#ps > $#keys)); then
@@ -107,7 +113,7 @@ zce-2-raw () {
   local -i n=1
   local null=$'\0'
   local MATCH MBEGIN MEND
-  ${keyinfun} '' "$b" "${b//(#m)${c}/${ks[i--][1]}}" \
+  ${keyinfun} '' "$b" "${b//(#m)([${c:u}${c:l}])/${ks[i--][1]}}" \
     "${movecfun}" "${keyinfun}" "${kreadfun}" \
     -- ${(s. .)${:-"${oks//(#m)$'\t'/$null$ps[((n++))] }$null$ps[n]"}}
 }
